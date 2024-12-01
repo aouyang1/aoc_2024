@@ -2,7 +2,12 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 use std::{process::exit};
-use std::collections::HashMap;
+
+use crate::part1::difference::difference;
+use crate::part2::similarity::similarity;
+
+pub mod part1;
+pub mod part2;
 
 fn main() {
     let mut a_id: Vec<i32> = Vec::new();
@@ -30,38 +35,8 @@ fn main() {
         }
     }
 
-    // let mut a = vec![3, 4, 2, 1, 3, 3];
-    // let mut b = vec![4, 3, 5, 3, 9, 3];
-    assert_eq!(a_id.len(), b_id.len());
-
-    let n = a_id.len();
-
-    let mut b_map: HashMap<i32, i32> = HashMap::new();
-    for i in 0..n {
-        match b_map.get(&b_id[i]) {
-            Some(num) => {
-                b_map.insert(b_id[i], num+1);
-            },
-            None => {
-                b_map.insert(b_id[i], 1);
-            }
-        }
-    }
-
-    // for (k, v) in &b_map {
-    //     println!("{k}: {v}");
-    // }
-
-    let mut score: i32 = 0;
-    for i in 0..n {
-        match b_map.get(&a_id[i]) {
-            Some(num) => {
-                score = score + a_id[i] * num;
-            },
-            None => (),
-        }
-    }
-    println!("{}", score)
+    println!("total diff: {}", difference(a_id.clone(), b_id.clone()));
+    println!("similarity: {}", similarity(a_id.clone(), b_id.clone()));
 }
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
